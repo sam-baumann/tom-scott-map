@@ -19,7 +19,7 @@ if resp.status_code != 200:
 
 playlist_id = resp.json()["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"] 
 
-max_iter = 2
+max_iter = 200
 
 params = {
     "key": API_KEY,
@@ -27,7 +27,7 @@ params = {
     "part": "snippet"
 }
 
-keyItems = ["publishedAt", "title", "description"]
+keyItems = ["publishedAt", "title", "description", "videoId"]
 
 rows = []
 
@@ -39,13 +39,17 @@ for i in range(max_iter):
         exit()
 
     resp = resp.json()
+
+    for item in resp["items"]:
+        item["snippet"]["videoId"] = item["snippet"]["resourceId"]["videoId"]
+        rows.append({x: item["snippet"][x] for x in keyItems})
+
     if resp.get("nextPageToken", None) != None:
         params["pageToken"] = resp["nextPageToken"]
     else:
-        del params["pageToken"]
+        break
+    print(len(rows))
 
-    for item in resp["items"]:
-        rows.append({x: item["snippet"][x] for x in keyItems})
 
 export = pd.DataFrame(rows, columns=keyItems)
 export.to_csv("./data/data.csv")
