@@ -3,7 +3,7 @@ from os import getenv
 import requests
 import pandas as pd
 
-load_dotenv("./data/yt_credentials.env")
+load_dotenv("./data/.env")
 
 API_KEY = getenv("API_KEY")
 
@@ -19,7 +19,7 @@ if resp.status_code != 200:
 
 playlist_id = resp.json()["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"] 
 
-max_iter = 200
+max_iter = 5
 
 params = {
     "key": API_KEY,
