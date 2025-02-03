@@ -12,7 +12,6 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 data.forEach(element => {
-  console.log(element.geocode);
   if (element.geocode) {
     // there seems to be an issue where the bbox could be interpreted as wrong, so cast to unknown first
     let location = element.geocode as unknown as FeatureCollection;
