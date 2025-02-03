@@ -25,7 +25,7 @@ def geocode(row):
         return None
 
 #only apply to the first 20, remove this when not testing
-df = df.head(20)
+#df = df.head(20)
 df["geocode"] = df.apply(geocode, axis=1)
 df.to_csv("./data/3_geocoded.csv")
 df["geocode"].apply(json.dumps)

@@ -16,6 +16,12 @@ data.forEach(element => {
   if (element.geocode) {
     // there seems to be an issue where the bbox could be interpreted as wrong, so cast to unknown first
     let location = element.geocode as unknown as FeatureCollection;
-    L.geoJSON(location).addTo(map);
+    L.geoJSON(location)
+      .bindPopup(() => {
+        return element.title + '<br>' + `<iframe width="560" height="315" src="https://www.youtube.com/embed/${element.videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`
+
+      }, {
+        minWidth: 560
+      }).addTo(map)
   } 
 });
