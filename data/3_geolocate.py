@@ -25,3 +25,4 @@ def geocode(row):
 
 df["geocode"] = df.apply(geocode, axis=1)
 df.to_csv("./data/3_geocoded.csv")
+df.to_json("./data/3_geocoded.json", orient="records")
