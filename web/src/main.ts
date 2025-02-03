@@ -1,10 +1,21 @@
 import L from "leaflet"
 import 'leaflet/dist/leaflet.css'
 import './style.css'
+import data from './data/3_geocoded.json'
+import { FeatureCollection } from "geojson"
 
-const map = L.map('map').setView([35.954956, -83.925376], 15);
+const map = L.map('map').setView([51.13579773276985, 1.3620947694621373], 5);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+
+data.forEach(element => {
+  console.log(element.geocode);
+  if (element.geocode) {
+    // there seems to be an issue where the bbox could be interpreted as wrong, so cast to unknown first
+    let location = element.geocode as unknown as FeatureCollection;
+    L.geoJSON(location).addTo(map);
+  } 
+});
