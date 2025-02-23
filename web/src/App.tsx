@@ -1,10 +1,11 @@
 import MapComponent from "./MapComponent"
+import Sidebar from "./Sidebar"
 import "./style.css"
 
 let App = () => {
     return <div>
         <MapComponent></MapComponent>
-        <div>sidebar</div>
+        <Sidebar></Sidebar> 
     </div>
 }
 

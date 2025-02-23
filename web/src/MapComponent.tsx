@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import data from './data/3_geocoded.json';
-import { FeatureCollection } from 'geojson';
+import data from './data/data.json';
 // https://willschenk.com/labnotes/2024/leaflet_markers_with_vite_build/
 import markerIconUrl from "leaflet/dist/images/marker-icon.png"
 import markerIconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
@@ -24,10 +23,9 @@ const MapComponent: React.FC = () => {
         }).addTo(map);
 
         data.forEach(element => {
-            if (element.geocode) {
-                let locationCollection = element.geocode as unknown as FeatureCollection
-                let location = locationCollection.features[0]
-                L.geoJSON(location)
+            if (element.geocode && element.geocode.length == 2) {
+                const coords = element.geocode as [number, number]
+                L.marker(coords)
                     .bindPopup(
                         `<iframe width="560" height="315" src="https://www.youtube.com/embed/${element.videoId}" allowfullscreen></iframe>`,
                         { minWidth: 560 }
