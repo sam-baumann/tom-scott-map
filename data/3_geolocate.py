@@ -27,6 +27,7 @@ def geocode(row):
 #only apply to the first 20, remove this when not testing
 #df = df.head(20)
 df["geocode"] = df.apply(geocode, axis=1)
-df.to_csv("./data/3_geocoded.csv")
-df["geocode"].apply(json.dumps)
 df.drop(columns=["description"]).to_json("./data/3_geocoded.json", orient="records")
+#the exported CSV does not automatically format csv correctly so convert it to string first
+df["geocode"] = df["geocode"].apply(json.dumps)
+df.to_csv("./data/3_geocoded.csv")
