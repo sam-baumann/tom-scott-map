@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import L from 'leaflet';
+import { useEffect, useRef } from 'react';
+import L, { Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import data from './data/data.json';
 // https://willschenk.com/labnotes/2024/leaflet_markers_with_vite_build/
@@ -13,7 +13,10 @@ L.Icon.Default.prototype.options.iconRetinaUrl = markerIconRetinaUrl;
 L.Icon.Default.prototype.options.shadowUrl = markerShadowUrl;
 L.Icon.Default.imagePath = ""
 
-const MapComponent: React.FC = () => {
+const MapComponent = ({activeVideo, setActiveVideo}:{activeVideo:string, setActiveVideo:(video: string) => void}) => {
+    //store a map of video ids to marker elements,
+    const markersRef = useRef<Map<string, Marker>>(new Map())
+
     useEffect(() => {
         const map = L.map('map').setView([51.1358, 1.3621], 5);
 
@@ -25,12 +28,18 @@ const MapComponent: React.FC = () => {
         data.forEach(element => {
             if (element.geocode && element.geocode.length == 2) {
                 const coords = element.geocode as [number, number]
-                L.marker(coords)
+                const marker = L.marker(coords)
                     .bindPopup(
                         `<iframe width="560" height="315" src="https://www.youtube.com/embed/${element.videoId}" allowfullscreen></iframe>`,
                         { minWidth: 560 }
                     )
                     .addTo(map);
+
+                marker.on("click", () => {
+                    setActiveVideo(element.videoId)
+                })
+
+                markersRef.current.set(element.videoId, marker)
             }
         });
 
@@ -38,6 +47,10 @@ const MapComponent: React.FC = () => {
             map.remove();
         };
     }, []);
+
+    useEffect(() => {
+        markersRef.current.get(activeVideo)?.openPopup();
+    }, [activeVideo])
 
     return <div id="map" style={{ height: '100vh' }}></div>;
 };
