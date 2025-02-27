@@ -43,6 +43,11 @@ const MapComponent = ({activeVideo, setActiveVideo}:{activeVideo:string, setActi
             }
         });
 
+        //DEV only: pass the click event to the manual check code
+        map.on("click", (click) => {
+            fetch(`/api/coords?lat=${click.latlng.lat}&lng=${click.latlng.lng}`)
+        })
+
         return () => {
             map.remove();
         };
