@@ -1,6 +1,6 @@
 # Map of all Tom Scott videos
 
-As of right now, limited to videos in the playlists "Things You Might Not Know", "Amazing Places", and "Built for Science"
+Interactive map to explore locations documented by creator [Tom Scott](https://www.youtube.com/channel/UCBa659QWEk1AI4Tg--mrJ2A)
 
 ### Data Pipeline
 Youtube API: extract video names and descriptions -> GPT-4o-mini: extract place names from video -> Nominatim API: Geocoding -> Leaflet: Display places
