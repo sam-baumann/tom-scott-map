@@ -13,5 +13,6 @@ Youtube API: extract video names and descriptions -> GPT-4o-mini: extract place 
  - [ ] If filtering data in the sidebar, also filter the options shown in the display
  - [ ] Change marker image/color for each playlist
  - [ ] Canter frame when video is clicked
- - [ ] Manual check of all videos (1/2 done)
+ - [ ] Manual check of all videos (70% done)
  - [ ] Add text search filter
+ - [ ] When clicking off a video, reset state to none
