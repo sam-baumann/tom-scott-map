@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, StrictMode } from "react"
+import { useState, useEffect, useRef, StrictMode, useMemo } from "react"
 import MapComponent from "./MapComponent"
 import data from "./data/data.json"
 import "./style.css"
@@ -13,7 +13,7 @@ export interface VideoInfo {
     marked: boolean;
 }
 
-let VideoData = data as VideoInfo[]
+let VideoData = (data as VideoInfo[]).filter((item) => {return item.geocode?.[0] != 0 || item.geocode?.[1] != 0})
 
 let App = () => {
     //active video that is highlighted on the screen
@@ -28,13 +28,17 @@ let App = () => {
         cur_video.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
     }, [activeVideo])
 
-    //create copy of data that we can pass into the children
-    let display_data = VideoData;
-
-    //filter data based on the sidebar selectors
-    if (playlist != "") {
-        display_data = display_data.filter((item) => { return item.playlist === playlist })
-    }
+    //need to use a memo here, otherwise filtering the data creates bad side effects down the line
+    const display_data = useMemo(() => {
+        //filter data based on the sidebar selectors
+        let ret: VideoInfo[] = []
+        if (playlist != "") {
+            ret = VideoData.filter((item) => { return item.playlist === playlist })
+        } else {
+            ret = VideoData
+        }
+        return ret;
+    }, [playlist])
 
 
     return <div>
