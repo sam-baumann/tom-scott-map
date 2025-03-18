@@ -17,6 +17,7 @@ const MapComponent = ({ data, activeVideo, setActiveVideo }: { data: VideoInfo[]
     //store a map of video ids to marker elements,
     const markersRef = useRef<Map<string, Marker>>(new Map());
     const mapRef = useRef<L.Map>(null);
+    const markerLayerRef = useRef<L.LayerGroup>(null)
 
     useEffect(() => {
         const map = L.map('map').setView([51.1358, 1.3621], 5);
@@ -27,45 +28,38 @@ const MapComponent = ({ data, activeVideo, setActiveVideo }: { data: VideoInfo[]
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         }).addTo(map);
 
+        let markerLayer = L.layerGroup().addTo(map)
+
+        data.forEach(element => {
+            if (element.geocode && element.geocode.length == 2) {
+                const coords = element.geocode
+                const marker = L.marker(coords)
+                    .bindPopup(
+                        `<iframe width="560" height="315" src="https://www.youtube.com/embed/${element.videoId}" allowfullscreen></iframe>`,
+                        { minWidth: 560 }
+                    )
+                    .addTo(markerLayer);
+
+                marker.on("click", () => {
+                    setActiveVideo(element.videoId)
+                    console.log(marker.isPopupOpen())
+                })
+
+                markersRef.current.set(element.videoId, marker)
+            }
+        });
+
+        markerLayerRef.current = markerLayer
+
         return () => {
             map.remove();
         };
     }, []);
 
     useEffect(() => {
+        console.log(markersRef)
         markersRef.current.get(activeVideo)?.openPopup();
     }, [activeVideo])
-
-    useEffect(() => {
-        const map = mapRef.current
-        const markerLayer = L.layerGroup();
-
-        if (map) {
-            data.forEach(element => {
-                if (element.geocode && element.geocode.length == 2) {
-                    const coords = element.geocode as [number, number]
-                    const marker = L.marker(coords)
-                        .bindPopup(
-                            `<iframe width="560" height="315" src="https://www.youtube.com/embed/${element.videoId}" allowfullscreen></iframe>`,
-                            { minWidth: 560 }
-                        )
-                        .addTo(markerLayer);
-
-                    marker.on("click", () => {
-                        setActiveVideo(element.videoId)
-                    })
-
-                    markersRef.current.set(element.videoId, marker)
-                }
-            });
-            markerLayer.addTo(map);
-        }
-
-        return () => {
-            markerLayer.clearLayers();
-            markersRef.current.clear();
-        }
-    }, [data])
 
     return <div id="map" style={{ height: '100vh' }}></div>;
 };

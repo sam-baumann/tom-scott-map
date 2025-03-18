@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, StrictMode } from "react"
 import MapComponent from "./MapComponent"
 import data from "./data/data.json"
 import "./style.css"
@@ -22,7 +22,7 @@ let App = () => {
     const [playlist, setPlaylist] = useState("")
 
     const cur_video = useRef<HTMLElement>(null)
-    
+
     //if active video is updateed, scroll the video into view on the sidebar
     useEffect(() => {
         cur_video.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
@@ -30,7 +30,7 @@ let App = () => {
 
     //create copy of data that we can pass into the children
     let display_data = VideoData;
-    
+
     //filter data based on the sidebar selectors
     if (playlist != "") {
         display_data = display_data.filter((item) => { return item.playlist === playlist })
@@ -38,32 +38,34 @@ let App = () => {
 
 
     return <div>
-        <MapComponent data={display_data} activeVideo={activeVideo} setActiveVideo={setActiveVideo}></MapComponent>
-        <div id="sidebar" className='roboto-sidebar'>
-        <div className='sticky-selectors'>
-            <select name='playlist-select' onChange={(changeEvent) => {
-                setPlaylist(changeEvent.target.value)
-            }
-            }>
-                <option value="">Playlist</option>
-                <option value="tymnk">Things You Might Not Know</option>
-                <option value="ap">Amazing Places</option>
-                <option value="bfs">Built for Science</option>
-            </select>
-        </div>
-
-        {
-            display_data.map((item) => {
-                return <div className={"sidebar-item" + (item.videoId == activeVideo ? " active-video" : "")} onClick={() => setActiveVideo(item.videoId)} ref={(elem) => {
-                    if (item.videoId == activeVideo) {
-                        cur_video.current = elem
+        <StrictMode>
+            <MapComponent data={display_data} activeVideo={activeVideo} setActiveVideo={setActiveVideo}></MapComponent>
+            <div id="sidebar" className='roboto-sidebar'>
+                <div className='sticky-selectors'>
+                    <select name='playlist-select' onChange={(changeEvent) => {
+                        setPlaylist(changeEvent.target.value)
                     }
-                }}>
-                    {item.title}
+                    }>
+                        <option value="">Playlist</option>
+                        <option value="tymnk">Things You Might Not Know</option>
+                        <option value="ap">Amazing Places</option>
+                        <option value="bfs">Built for Science</option>
+                    </select>
                 </div>
-            })
-        }
-    </div>
+
+                {
+                    display_data.map((item) => {
+                        return <div className={"sidebar-item" + (item.videoId == activeVideo ? " active-video" : "")} onClick={() => setActiveVideo(item.videoId)} ref={(elem) => {
+                            if (item.videoId == activeVideo) {
+                                cur_video.current = elem
+                            }
+                        }}>
+                            {item.title}
+                        </div>
+                    })
+                }
+            </div>
+        </StrictMode>
     </div>
 }
 
