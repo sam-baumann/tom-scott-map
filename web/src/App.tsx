@@ -59,12 +59,19 @@ let App = () => {
 
                 {
                     display_data.map((item) => {
-                        return <div className={"sidebar-item" + (item.videoId == activeVideo ? " active-video" : "")} onClick={() => setActiveVideo(item.videoId)} ref={(elem) => {
+                        return <div className={"sidebar-item" + (item.videoId == activeVideo ? " active-video" : "")} 
+                        onClick={() => {
+                            setActiveVideo(item.videoId);
+                        }} 
+                        ref={(elem) => {
                             if (item.videoId == activeVideo) {
-                                cur_video.current = elem
+                                cur_video.current = elem;
                             }
-                        }}>
-                            {item.title}
+                        }}
+                        key={item.videoId}>
+                            Title: {item.title}
+                            <br/>
+                            Location: {item.geocode?.[0]?.toPrecision(4)}, {item.geocode?.[1]?.toPrecision(4)}
                         </div>
                     })
                 }

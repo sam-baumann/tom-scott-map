@@ -18,7 +18,6 @@ const MapComponent = ({ data, activeVideo, setActiveVideo }: { data: VideoInfo[]
     const markersRef = useRef<Map<string, Marker>>(new Map());
     const mapRef = useRef<L.Map>(null);
     const markerLayerRef = useRef<L.LayerGroup>(null)
-    console.log(data)
 
     useEffect(() => {
         const map = L.map('map').setView([51.1358, 1.3621], 5);
@@ -38,12 +37,14 @@ const MapComponent = ({ data, activeVideo, setActiveVideo }: { data: VideoInfo[]
     }, []);
 
     useEffect(() => {
-        console.log(markersRef)
-        markersRef.current.get(activeVideo)?.openPopup();
+        let currentPopup = markersRef.current.get(activeVideo)
+        if (currentPopup) {
+            mapRef.current?.panTo(currentPopup.getLatLng())
+            currentPopup.openPopup();
+        }
     }, [activeVideo])
 
     useEffect(() => {
-        console.log("resetting vals")
         markerLayerRef.current?.clearLayers();
         markersRef.current = new Map<string, Marker>();
 
@@ -60,7 +61,6 @@ const MapComponent = ({ data, activeVideo, setActiveVideo }: { data: VideoInfo[]
 
                 marker.on("click", () => {
                     setActiveVideo(element.videoId)
-                    console.log(marker.isPopupOpen())
                 })
 
                 markersRef.current.set(element.videoId, marker)
