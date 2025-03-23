@@ -31,6 +31,18 @@ const MapComponent = ({ data, activeVideo, setActiveVideo }: { data: VideoInfo[]
         let markerLayer = L.layerGroup().addTo(map)
         markerLayerRef.current = markerLayer
 
+        const coordsControl = new L.Control({ position: 'bottomleft' });
+
+       coordsControl.onAdd = (map: L.Map) => {
+        let ret = document.createElement("div")
+        map.on("mousemove", (event) => {
+            ret.innerHTML = `<div class="control">${event.latlng.lat.toFixed(4)}, ${event.latlng.lng.toFixed(4)}</div>`
+        })
+        return ret
+       } 
+
+        coordsControl.addTo(map);
+
         return () => {
             map.remove();
         };

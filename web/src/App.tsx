@@ -20,6 +20,8 @@ let App = () => {
     const [activeVideo, setActiveVideo] = useState("")
     //selector for playlist (updated in sidebar)
     const [playlist, setPlaylist] = useState("")
+    //selector for text filter
+    const [filter, setFilter] = useState("")
 
     const cur_video = useRef<HTMLElement>(null)
 
@@ -37,8 +39,14 @@ let App = () => {
         } else {
             ret = VideoData
         }
+
+        if (filter != "") {
+            ret = ret.filter((item) => {
+                return item.title.toLowerCase().includes(filter.toLowerCase())
+            })
+        }
         return ret;
-    }, [playlist])
+    }, [playlist, filter])
 
 
     return <div>
@@ -55,6 +63,10 @@ let App = () => {
                         <option value="ap">Amazing Places</option>
                         <option value="bfs">Built for Science</option>
                     </select>
+
+                    <input type="search" placeholder="filter" name="TextFilter" onChange={(changeEvent) => {
+                        setFilter(changeEvent.target.value)
+                    }}></input>
                 </div>
 
                 {
