@@ -39,8 +39,8 @@ const MapComponent = ({ data, activeVideo, setActiveVideo }: { data: VideoInfo[]
     useEffect(() => {
         let currentPopup = markersRef.current.get(activeVideo)
         if (currentPopup) {
-            mapRef.current?.panTo(currentPopup.getLatLng())
             currentPopup.openPopup();
+            mapRef.current?.panTo(currentPopup.getLatLng())
         }
     }, [activeVideo])
 
