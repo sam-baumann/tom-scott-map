@@ -67,3 +67,31 @@ html, body {
   border-radius: 5px;
   padding: 2px;
 }
+
+.video-player {
+  width: 580px;
+  height: 350px;
+}
+
+.leaflet-popup-content {
+  width: auto;
+  max-width: none;
+}
+
+/* mobile */
+@media (max-width: 600px) {
+   #map {
+    width: 100%;
+    height: 60vh;
+   }
+
+   #sidebar {
+    width: 100%;
+    height: 40vh;
+   }
+
+   .video-player {
+    width: 290px;
+    height: 175px;
+   }
+}

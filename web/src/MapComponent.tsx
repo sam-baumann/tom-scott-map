@@ -65,9 +65,8 @@ const MapComponent = ({ data, activeVideo, setActiveVideo }: { data: VideoInfo[]
                 const coords = element.geocode
                 const marker = L.marker(coords)
                     .bindPopup(
-                        `<iframe width="560" height="315" src="https://www.youtube.com/embed/${element.videoId}" allowfullscreen></iframe>`,
-                        { minWidth: 560 }
-                    )
+                        `<iframe class="video-player" src="https://www.youtube.com/embed/${element.videoId}" allowfullscreen></iframe>`
+                    , {maxWidth: undefined})
 
                 markerLayerRef.current?.addLayer(marker);
 
@@ -81,7 +80,7 @@ const MapComponent = ({ data, activeVideo, setActiveVideo }: { data: VideoInfo[]
 
     }, [data])
 
-    return <div id="map" style={{ height: '100vh' }}></div>;
+    return <div id="map"></div>;
 };
 
 export default MapComponent;
