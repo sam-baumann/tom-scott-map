@@ -7,5 +7,6 @@ export default defineConfig({
         proxy: {
             '/api': 'http://localhost:5001'
         }
-    }
+    },
+    base: '/tom-scott-map/'
 });
