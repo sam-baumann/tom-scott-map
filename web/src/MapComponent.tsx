@@ -33,14 +33,24 @@ const MapComponent = ({ data, activeVideo, setActiveVideo }: { data: VideoInfo[]
 
         const coordsControl = new L.Control({ position: 'bottomleft' });
 
-       coordsControl.onAdd = (map: L.Map) => {
-        let ret = document.createElement("div")
-        map.on("mousemove", (event) => {
-            ret.innerHTML = `<div class="control">${event.latlng.lat.toFixed(4)}, ${event.latlng.lng.toFixed(4)}</div>`
-        })
-        return ret
-       } 
+        coordsControl.onAdd = (map: L.Map) => {
+            let ret = document.createElement("div")
+            map.on("mousemove", (event) => {
+                ret.innerHTML = `<div class="control">${event.latlng.lat.toFixed(4)}, ${event.latlng.lng.toFixed(4)}</div>`
+            })
+            return ret
+        }
 
+
+        const gitHubControl = new L.Control({position: 'bottomleft'})
+
+        gitHubControl.onAdd = () => {
+            let ret = document.createElement("div");
+            ret.innerHTML = "<a href=\"https://github.com/sam-baumann/tom-scott-map\"> GitHub </a>"
+            return ret
+        }
+
+        gitHubControl.addTo(map)
         coordsControl.addTo(map);
 
         return () => {
@@ -66,7 +76,7 @@ const MapComponent = ({ data, activeVideo, setActiveVideo }: { data: VideoInfo[]
                 const marker = L.marker(coords)
                     .bindPopup(
                         `<iframe class="video-player" src="https://www.youtube.com/embed/${element.videoId}" allowfullscreen></iframe>`
-                    , {maxWidth: undefined})
+                        , { maxWidth: undefined })
 
                 markerLayerRef.current?.addLayer(marker);
 

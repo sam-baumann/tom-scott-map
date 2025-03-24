@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, StrictMode, useMemo } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import MapComponent from "./MapComponent"
 import data from "./data/data.json"
 import "./style.css"
@@ -13,7 +13,7 @@ export interface VideoInfo {
     marked: boolean;
 }
 
-let VideoData = (data as VideoInfo[]).filter((item) => {return item.geocode?.[0] != 0 || item.geocode?.[1] != 0})
+let VideoData = (data as VideoInfo[]).filter((item) => { return item.geocode?.[0] != 0 || item.geocode?.[1] != 0 })
 
 let App = () => {
     //active video that is highlighted on the screen
@@ -50,45 +50,43 @@ let App = () => {
 
 
     return <div>
-        <StrictMode>
-            <MapComponent data={display_data} activeVideo={activeVideo} setActiveVideo={setActiveVideo}></MapComponent>
-            <div id="sidebar" className='roboto-sidebar'>
-                <div className='sticky-selectors'>
-                    <select name='playlist-select' onChange={(changeEvent) => {
-                        setPlaylist(changeEvent.target.value)
-                    }
-                    }>
-                        <option value="">Playlist</option>
-                        <option value="tymnk">Things You Might Not Know</option>
-                        <option value="ap">Amazing Places</option>
-                        <option value="bfs">Built for Science</option>
-                    </select>
+        <MapComponent data={display_data} activeVideo={activeVideo} setActiveVideo={setActiveVideo}></MapComponent>
+        <div id="sidebar" className='roboto-sidebar'>
+            <div className='sticky-selectors'>
+                <select name='playlist-select' onChange={(changeEvent) => {
+                    setPlaylist(changeEvent.target.value)
+                }
+                }>
+                    <option value="">Playlist</option>
+                    <option value="tymnk">Things You Might Not Know</option>
+                    <option value="ap">Amazing Places</option>
+                    <option value="bfs">Built for Science</option>
+                </select>
 
-                    <input type="search" placeholder="filter" name="TextFilter" onChange={(changeEvent) => {
-                        setFilter(changeEvent.target.value)
-                    }}></input>
-                </div>
+                <input type="search" placeholder="filter" name="TextFilter" onChange={(changeEvent) => {
+                    setFilter(changeEvent.target.value)
+                }}></input>
+            </div>
 
-                {
-                    display_data.map((item) => {
-                        return <div className={"sidebar-item" + (item.videoId == activeVideo ? " active-video" : "")} 
+            {
+                display_data.map((item) => {
+                    return <div className={"sidebar-item" + (item.videoId == activeVideo ? " active-video" : "")}
                         onClick={() => {
                             setActiveVideo(item.videoId);
-                        }} 
+                        }}
                         ref={(elem) => {
                             if (item.videoId == activeVideo) {
                                 cur_video.current = elem;
                             }
                         }}
                         key={item.videoId}>
-                            Title: {item.title}
-                            <br/>
-                            Location: {item.geocode?.[0]?.toPrecision(4)}, {item.geocode?.[1]?.toPrecision(4)}
-                        </div>
-                    })
-                }
-            </div>
-        </StrictMode>
+                        Title: {item.title}
+                        <br />
+                        Location: {item.geocode?.[0]?.toPrecision(4)}, {item.geocode?.[1]?.toPrecision(4)}
+                    </div>
+                })
+            }
+        </div>
     </div>
 }
 

@@ -1,18 +1,10 @@
-# Map of all Tom Scott videos
+# Map of Tom Scott videos
+
+### [View the map here](https://sambaumann.com/tom-scott-map)
 
 Interactive map to explore locations documented by creator [Tom Scott](https://www.youtube.com/channel/UCBa659QWEk1AI4Tg--mrJ2A)
 
+Notice anything off? Issues and PRs welcome!
+
 ### Data Pipeline
 Youtube API: extract video names and descriptions -> GPT-4o-mini: extract place names from video -> Nominatim API: Geocoding -> Leaflet: Display places
-
-### Todos
- - [x] Remove description from web JSON file
- - [x] Pre-parse geocoding JSON in web file
- - [x] Create type definition for data file
- - [x] Lift state up to main component
- - [x] If filtering data in the sidebar, also filter the options shown in the display
- - [ ] Change marker image/color for each playlist
- - [x] Canter frame when video is clicked
- - [x] Manual check of all videos (70% done)
- - [x] Add text search filter
- - [x] When clicking off a video, reset state to none
