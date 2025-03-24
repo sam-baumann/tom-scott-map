@@ -39,6 +39,7 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
+          working-directory: ./web
       - name: install pnpm
         run: npm install -g pnpm
       - name: Install dependencies
